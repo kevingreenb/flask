@@ -1,8 +1,9 @@
 import json
-from flask import Flask, render_template, request, redirect, url_for, make_response
-app = Flask(__name__)
-
+from flask import Flask, render_template, request, redirect, url_for, make_response, flash
 from options import DEFAULTS
+
+app = Flask(__name__)
+app.secret_key = 'hasdlajpdwaiw182813klasndkasda' #flask uses encryption for sessions
 
 #Retrieves name from cookie
 def get_saved_data():
@@ -24,6 +25,7 @@ def builder():
 
 @app.route('/save', methods=['POST'])
 def save():
+	flash("That looks awesome!")
 	response = make_response(redirect(url_for('builder')))
 	data = get_saved_data() #gets saved cookies if any
 	data.update(dict(request.form.items())) #gets all key pair values from request and updates data
