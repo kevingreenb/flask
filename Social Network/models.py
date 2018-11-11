@@ -4,7 +4,7 @@ from flask.ext.bcrypt import generate_password_hash
 from flask.ext.login import UserMixin
 from peewee import *
 
-DATABASE = SqliteDatabase('social.db', threadlocals=True)
+DATABASE = SqliteDatabase('social.db')
 
 class User(UserMixin, Model):
     username = CharField(unique=True)
@@ -22,6 +22,7 @@ class User(UserMixin, Model):
     
     def get_stream(self):
         return Post.select().where(
+            (Post.user << self.following()) |
             (Post.user == self)
         )
     
